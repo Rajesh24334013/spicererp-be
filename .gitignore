@@ -1,3 +1,2 @@
-git add .
-git commit -m "Added start script"
-git push origin main
+node_modules/
+.env
