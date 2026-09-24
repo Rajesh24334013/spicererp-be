@@ -1,7 +1,10 @@
 import User from "../models/User.js";
 import bcrypt from "bcryptjs";
 
-// REGISTER
+// ===============================
+// REGISTER USER
+// ===============================
+
 export const registerUser = async (req, res) => {
   try {
     const { username, email, password } = req.body;
@@ -13,7 +16,7 @@ export const registerUser = async (req, res) => {
       });
     }
 
-    // Check existing username
+    // Check username
     const existingUsername = await User.findOne({ username });
 
     if (existingUsername) {
@@ -22,8 +25,10 @@ export const registerUser = async (req, res) => {
       });
     }
 
-    // Check existing email
-    const existingEmail = await User.findOne({ email });
+    // Check email
+    const existingEmail = await User.findOne({
+      email: email.toLowerCase(),
+    });
 
     if (existingEmail) {
       return res.status(400).json({
@@ -37,7 +42,7 @@ export const registerUser = async (req, res) => {
     // Create user
     const user = new User({
       username,
-      email,
+      email: email.toLowerCase(),
       password: hashedPassword,
     });
 
@@ -61,7 +66,10 @@ export const registerUser = async (req, res) => {
   }
 };
 
-// LOGIN
+// ===============================
+// LOGIN USER
+// ===============================
+
 export const loginUser = async (req, res) => {
   try {
     const { username, password } = req.body;
